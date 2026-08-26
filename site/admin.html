@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Enquiries</title>
+  <link rel="stylesheet" href="/site/assets/styles.css">
+  <style>
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px;border:1px solid #ddd}
+    .small{font-size:0.9em;color:#666}
+  </style>
+</head>
+<body>
+  <header class="site-header container">
+    <h1 class="brand">Admin — Enquiries</h1>
+    <nav>
+      <a href="/site/index.html">Home</a>
+      <a href="/site/routes.html">Routes</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <p class="small">This admin page lists booking enquiries saved to the repository. For security, protect this page (Netlify Access Controls or other) in production.</p>
+    <div id="content">Loading…</div>
+  </main>
+
+  <script>
+    async function load(){
+      try{
+        const res = await fetch('/.netlify/functions/enquiries-list');
+        if(!res.ok){ document.getElementById('content').innerText = 'Failed to load enquiries'; return; }
+        const list = await res.json();
+        if(!Array.isArray(list) || list.length===0){ document.getElementById('content').innerText = 'No enquiries yet.'; return; }
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        thead.innerHTML = '<tr><th>ID</th><th>Created</th><th>Name</th><th>Phone</th><th>Route</th><th>Date</th><th>Passengers</th><th>Type</th></tr>';
+        table.appendChild(thead);
+        const tbody = document.createElement('tbody');
+        list.slice().reverse().forEach(e=>{
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${e.id}</td><td>${e.created_at||''}</td><td>${e.name||''}</td><td>${e.phone||''}</td><td>${(e.origin||'') + (e.destination? ' → '+e.destination : '')}</td><td>${e.date||''}</td><td>${e.passengers||''}</td><td>${e.type||''}</td>`;
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        const div = document.getElementById('content');
+        div.innerHTML = '';
+        div.appendChild(table);
+      }catch(err){
+        document.getElementById('content').innerText = 'Error loading enquiries';
+        console.error(err);
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
