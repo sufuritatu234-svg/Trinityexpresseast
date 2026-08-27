@@ -1,0 +1,10 @@
+.banner{background:#0b9; color:#002; padding:10px 0; text-align:center}
+.banner p{margin:0; font-weight:600}
+.banner-link{color:#002; text-decoration:underline}
+
+.container{max-width:960px;margin:0 auto;padding:16px}
+.site-header{display:flex;justify-content:space-between;align-items:center}
+.site-header nav a{margin-left:12px}
+.brand{font-size:1.25rem}
+
+.site-footer{margin-top:40px;text-align:center;color:#666}
