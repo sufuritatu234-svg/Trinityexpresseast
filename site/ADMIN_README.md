@@ -1,24 +1,11 @@
-# Admin and enquiries storage
+# Admin and enquiries storage — REMOVED
 
-This repository now supports a lightweight admin listing for booking enquiries. Implementation details:
+The admin UI and automatic saving of enquiries to the repository have been removed in this branch. The website has been simplified to rely on the booking agent's phone/WhatsApp and email only.
 
-- Enquiries are saved to a JSON file inside the repo at: data/enquiries.json
-- The enquiry submission function (netlify/functions/enquiry.js) will attempt to: 1) send an email via SendGrid (if configured), and 2) append the enquiry to the enquiries JSON file by committing to the repository using the GitHub REST API.
+Current contact details:
+- Phone / WhatsApp: +254 753 753 266
+- Email: jameskesteve@gmail.com
 
-Required environment variables for persistence and admin functions:
-- GITHUB_TOKEN: a personal access token with `repo` scope (to read/write the enquiries file). Set this in Netlify (or your hosting provider) to allow the serverless function to create/update `data/enquiries.json`.
-- GITHUB_REPO (optional): defaults to `sufuritatu234-svg/Trinityexpresseast`.
-- BRANCH (optional): defaults to `main`.
-- ENQUIRIES_PATH (optional): defaults to `data/enquiries.json`.
-
-Security notes:
-- The admin page (site/admin.html) is not protected by authentication. Do not expose it publicly without access controls. Netlify offers "Password protect" and "Members" features; use them or host the admin behind basic auth.
-- The GITHUB_TOKEN must be kept secret. Do NOT commit it to the repository.
-
-How it works:
-- When a user submits the booking/charter enquiry form, the enquiry function sends an email (if SendGrid is configured) and appends the enquiry to the JSON file in the repo.
-- The admin page loads /.netlify/functions/enquiries-list, which reads the JSON file from the repo and returns it as JSON to the admin UI.
-
-To test locally:
-- Use Netlify CLI: `netlify dev` and set env vars locally (NETLIFY_ENV or via .env). The function will commit to the repository only if GITHUB_TOKEN is provided.
-
+Notes for maintainers:
+- Netlify functions remain in the repository but are no longer used by the site pages. If you want to fully remove them, delete the `netlify/functions` files.
+- If you want to re-enable server-side persistence, reintroduce a protected admin UI and configure a secret GITHUB_TOKEN as described previously.

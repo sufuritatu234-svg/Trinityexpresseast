@@ -1,6 +1,6 @@
 // Shared functions for WhatsApp-first booking and enquiry form
 const AGENT_PHONE = '254753753266'; // 0753753266 → 254753753266 (Kenya, no +)
-const AGENT_EMAIL = 'agent@example.com';
+const AGENT_EMAIL = 'jameskesteve@gmail.com';
 
 function openWhatsAppMessage(message){
   const url = `https://wa.me/${AGENT_PHONE}?text=${encodeURIComponent(message)}`;
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 
-  // book buttons across pages
+  // book buttons across pages — open WhatsApp with a prefilled message
   document.querySelectorAll('.bookNow').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const trip = btn.dataset.trip || '';
@@ -35,61 +35,48 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const waLink = document.getElementById('waLink');
   if(waLink){
     waLink.href = `https://wa.me/${AGENT_PHONE}`;
+    waLink.addEventListener('click', (e)=>{
+      // allow the link to open WhatsApp
+    });
   }
 
-  // booking form page
+  // booking form page — open WhatsApp instead of submitting to serverless function
   const bookingForm = document.getElementById('bookingForm');
   if(bookingForm){
-    document.getElementById('openWhatsApp').addEventListener('click', ()=>{
+    document.getElementById('openWhatsApp')?.addEventListener('click', ()=>{
       const data = new FormData(bookingForm);
-      const msg = `Hi Trinity Express, I want to book from ${data.get('origin')} to ${data.get('destination')} on ${data.get('date')}. Passengers: ${data.get('passengers')}. Name: ${data.get('name')}, Phone: ${data.get('phone')}`;
+      const msg = `Hi Trinity Express, I want to book from ${data.get('origin')} to ${data.get('destination')} on ${data.get('date')}. Passengers: ${data.get('passengers')}. Name: ${data.get('name')}. Phone: ${data.get('phone') || ''}`;
       openWhatsAppMessage(msg);
     });
 
-    bookingForm.addEventListener('submit', async (e)=>{
+    bookingForm.addEventListener('submit', (e)=>{
       e.preventDefault();
-      const body = Object.fromEntries(new FormData(bookingForm).entries());
-      try{
-        const res = await fetch('/.netlify/functions/enquiry',{
-          method:'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(body)
-        });
-        if(res.ok){ window.location='/site/thank-you.html'; }
-        else { alert('Could not send enquiry, please WhatsApp or call the agent.'); }
-      }catch(err){
-        alert('Network error - please WhatsApp or call the agent.');
-      }
+      const data = new FormData(bookingForm);
+      const msg = `Hi Trinity Express, I want to book from ${data.get('origin')} to ${data.get('destination')} on ${data.get('date')}. Passengers: ${data.get('passengers')}. Name: ${data.get('name')}. Phone: ${data.get('phone') || ''}`;
+      openWhatsAppMessage(msg);
     });
   }
 
-  // charter form
+  // charter form — same behaviour: open WhatsApp
   const charter = document.getElementById('charterRequest');
   if(charter){
     document.getElementById('charterWhatsApp')?.addEventListener('click', (ev)=>{
       ev.preventDefault();
-      const msg = `Hi Trinity Express, I want a chartered bus. Please advise.`;
+      const msg = `Hi Trinity Express, I want a chartered bus. Please advise. Name:`;
       openWhatsAppMessage(msg);
     });
 
     document.getElementById('charterSendWA')?.addEventListener('click', ()=>{
       const data = new FormData(charter);
-      const msg = `Hi Trinity Express, Charter request: ${data.get('route')} on ${data.get('date')}. Passengers: ${data.get('passengers')}. Name: ${data.get('name')}. Phone: ${data.get('phone')}`;
+      const msg = `Hi Trinity Express, Charter request: ${data.get('route')} on ${data.get('date')}. Passengers: ${data.get('passengers')}. Name: ${data.get('name')}. Phone: ${data.get('phone') || ''}`;
       openWhatsAppMessage(msg);
     });
 
-    charter.addEventListener('submit', async (e)=>{
+    charter.addEventListener('submit', (e)=>{
       e.preventDefault();
-      const body = Object.fromEntries(new FormData(charter).entries());
-      try{
-        const res = await fetch('/.netlify/functions/enquiry',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({...body, type:'charter'})
-        });
-        if(res.ok) window.location='/site/thank-you.html';
-        else alert('Could not send charter request - please WhatsApp or call.');
-      }catch(err){ alert('Network error - please WhatsApp or call.'); }
+      const data = new FormData(charter);
+      const msg = `Hi Trinity Express, Charter request: ${data.get('route')} on ${data.get('date')}. Passengers: ${data.get('passengers')}. Name: ${data.get('name')}. Phone: ${data.get('phone') || ''}`;
+      openWhatsAppMessage(msg);
     });
   }
 });
