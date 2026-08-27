@@ -1,11 +1,11 @@
-# Admin and enquiries storage — REMOVED
+# Admin and enquiries storage — FUNCTIONS DISABLED
 
-The admin UI and automatic saving of enquiries to the repository have been removed in this branch. The website has been simplified to rely on the booking agent's phone/WhatsApp and email only.
+The Netlify functions that previously saved and listed enquiries have been disabled (replaced with stubs) because the site now handles bookings and payments via WhatsApp, phone and email only.
 
-Current contact details:
+If you want to permanently delete the functions, remove the files under `netlify/functions/`.
+
+Current contact details (site-wide):
 - Phone / WhatsApp: +254 753 753 266
 - Email: jameskesteve@gmail.com
 
-Notes for maintainers:
-- Netlify functions remain in the repository but are no longer used by the site pages. If you want to fully remove them, delete the `netlify/functions` files.
-- If you want to re-enable server-side persistence, reintroduce a protected admin UI and configure a secret GITHUB_TOKEN as described previously.
+If you later want to re-enable server-side persistence, reintroduce the original functions, protect an admin UI, and configure a GITHUB_TOKEN as described previously.
