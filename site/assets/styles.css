@@ -1,7 +1,19 @@
-.banner{background:#0b9; color:#002; padding:10px 0; text-align:center; position:sticky; top:0; z-index:999}
-.banner p{margin:0; font-weight:600}
-.banner-link{color:#002; text-decoration:underline}
-.payment-note{font-weight:400; font-size:0.95em; margin-top:4px}
+.banner{display:none}
+
+/* Floating action button (FAB) */
+.fab { position: fixed; right: 16px; bottom: 16px; z-index: 1200; }
+.fab-button { background:#0b9; color:#002; border:none; width:56px; height:56px; border-radius:50%; box-shadow:0 4px 12px rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; font-weight:700; cursor:pointer }
+.fab-button:focus{outline:2px solid rgba(0,0,0,0.1)}
+.fab-menu { position:absolute; right:0; bottom:72px; background:#fff; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.15); overflow:hidden; min-width:200px }
+.fab-item { display:flex; align-items:center; padding:10px 12px; border-bottom:1px solid #eee; text-decoration:none; color:#002 }
+.fab-item:last-child{border-bottom:0}
+.fab-item:hover{background:#f5f5f5}
+.fab-item .label{margin-left:8px}
+
+/* Small responsive tweaks */
+@media (min-width:800px){
+  .fab-button{width:64px;height:64px}
+}
 
 .container{max-width:960px;margin:0 auto;padding:16px}
 .site-header{display:flex;justify-content:space-between;align-items:center}

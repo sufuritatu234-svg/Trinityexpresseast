@@ -6,9 +6,67 @@ function openWhatsAppMessage(message){
   const url = `https://wa.me/${AGENT_PHONE}?text=${encodeURIComponent(message)}`;
   window.open(url, '_blank');
 }
+function openPhone(){
+  window.location = `tel:+${AGENT_PHONE}`;
+}
+function openEmail(){
+  window.location = `mailto:${AGENT_EMAIL}`;
+}
+
+// Create floating action button (FAB)
+function createFAB(){
+  if(document.getElementById('site-fab')) return;
+  const fab = document.createElement('div');
+  fab.id = 'site-fab';
+  fab.className = 'fab';
+
+  const button = document.createElement('button');
+  button.className = 'fab-button';
+  button.title = 'Contact Trinity Express';
+  button.innerText = '☏';
+
+  const menu = document.createElement('div');
+  menu.className = 'fab-menu';
+  menu.style.display = 'none';
+
+  const wa = document.createElement('a');
+  wa.href = `https://wa.me/${AGENT_PHONE}?text=${encodeURIComponent('Hello Trinity Express, I would like to book')}`;
+  wa.target = '_blank';
+  wa.className = 'fab-item';
+  wa.innerHTML = `<span>WhatsApp</span><span class="label">+254 753 753 266</span>`;
+
+  const call = document.createElement('a');
+  call.href = `tel:+254753753266`;
+  call.className = 'fab-item';
+  call.innerHTML = `<span>Call</span><span class="label">+254 753 753 266</span>`;
+
+  const email = document.createElement('a');
+  email.href = `mailto:${AGENT_EMAIL}`;
+  email.className = 'fab-item';
+  email.innerHTML = `<span>Email</span><span class="label">${AGENT_EMAIL}</span>`;
+
+  menu.appendChild(wa);
+  menu.appendChild(call);
+  menu.appendChild(email);
+
+  button.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  });
+
+  // close menu when clicking outside
+  document.addEventListener('click', ()=>{ menu.style.display = 'none'; });
+  menu.addEventListener('click', (e)=>{ e.stopPropagation(); });
+
+  fab.appendChild(button);
+  fab.appendChild(menu);
+  document.body.appendChild(fab);
+}
 
 // wire up search on home
 document.addEventListener('DOMContentLoaded', ()=>{
+  createFAB();
+
   const go = document.getElementById('goSearch');
   if(go){
     go.addEventListener('click', ()=>{
@@ -34,7 +92,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // contact page WA link
   const waLink = document.getElementById('waLink');
   if(waLink){
-    waLink.href = `https://wa.me/${AGENT_PHONE}`;
+    waLink.href = `https://wa.me/${AGENT_PHONE}?text=${encodeURIComponent('Hello Trinity Express, I would like to book or make a payment')}`;
   }
 
   // booking form page — open WhatsApp instead of submitting to serverless function
