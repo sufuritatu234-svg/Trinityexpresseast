@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 
-  // book buttons across pages — open WhatsApp with a prefilled message
+  // book buttons across pages
   document.querySelectorAll('.bookNow').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const trip = btn.dataset.trip || '';
@@ -35,9 +35,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const waLink = document.getElementById('waLink');
   if(waLink){
     waLink.href = `https://wa.me/${AGENT_PHONE}`;
-    waLink.addEventListener('click', (e)=>{
-      // allow the link to open WhatsApp
-    });
   }
 
   // booking form page — open WhatsApp instead of submitting to serverless function

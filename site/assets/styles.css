@@ -1,6 +1,7 @@
-.banner{background:#0b9; color:#002; padding:10px 0; text-align:center}
+.banner{background:#0b9; color:#002; padding:10px 0; text-align:center; position:sticky; top:0; z-index:999}
 .banner p{margin:0; font-weight:600}
 .banner-link{color:#002; text-decoration:underline}
+.payment-note{font-weight:400; font-size:0.95em; margin-top:4px}
 
 .container{max-width:960px;margin:0 auto;padding:16px}
 .site-header{display:flex;justify-content:space-between;align-items:center}
